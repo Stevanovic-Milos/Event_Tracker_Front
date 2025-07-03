@@ -1,0 +1,17 @@
+<div class="container">
+  <h1>Events</h1>
+  
+  <!-- Loading u slucaju da se i dalje ceka na odgovor beka -->
+  <div *ngIf="loading" class="loading">Loading events...</div>
+  
+  <div *ngIf="error" class="error">{{ error }}</div>
+  
+  <!-- Prikazuje da nema eventova u slucaju da nista nije vraceno -->
+  <div *ngIf="!loading && !error">
+    <div *ngIf="events.length === 0">No events found</div>
+    
+    <div *ngFor="let event of events" class="event-card">
+      <h2>{{ event.eventName }}</h2>
+    </div>
+  </div>
+</div>
