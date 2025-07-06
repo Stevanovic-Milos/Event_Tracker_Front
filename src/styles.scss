@@ -1,14 +1,18 @@
+//glavna konfiguracija aplikacije za stilizaciju i teme
+//ovde se definišu globalne stilove, teme i boje koje će aplikacija koristiti
 @use '@angular/material' as mat;
 
-//boje
+//ovim bojama je upotrebom var(--naziv-boje) moguće menjati boje u aplikaciji i prustipiti iz bilo kog aplikacijskog scss fajla
 :root {
-  --primary-color: #3498db;
-  --secondary-color: #91B3FA;
-  --accent-color: #e74c3c;
-  --text-color: #333;
-  --background-color: #f5f5f5;
+    --primary-color: #3498db;
+    --secondary-color: #91B3FA;
+    --accent-color: #e74c3c;
+    --text-color: #333;
+    --background-color: #f5f5f5;
 }
 
+//ovde se definiše tema aplikacije koristeći Angular Material
+//ovim se postavlja paleta boja, tipografija i gustina (density
 html {
     @include mat.theme((color: mat.$azure-palette,
             typography: (plain-family: Roboto,
@@ -21,12 +25,15 @@ html {
         ));
 }
 
+// Postavljanje osnovnih stilova za aplikaciju za telo
 body {
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
     background-color: var(--background-color);
 }
 
+//sve ispod su nase kimponente koje cemo koristiti kao reusable u aplikaciji
+//one su stilizovane da budu fleksibilne i prilagodljive različitim sadržajima
 .container {
     max-width: 1200px;
     align-items: center;
@@ -69,16 +76,17 @@ body {
     font-weight: 600;
     color: var(--primary-color);
 }
+
 .title-form {
-    width: 100%; 
-    text-align: left; 
-    margin-bottom: 16px; 
-    font-size: 24px; 
-    font-weight: 500; 
-    color: var(--primary-color); 
+    width: 100%;
+    text-align: left;
+    margin-bottom: 16px;
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--primary-color);
 }
 
-.link{
+.link {
     color: var(--primary-color);
     text-decoration: underline;
     cursor: pointer;

@@ -1,4 +1,6 @@
 <div class="container">
+  
+  <!-- Definisan je tekst dobrodošlice i ispod naziv aplikacije-->
   <div class="left">
     <div class="welcome">
       Dobrodošli u našu aplikaciju,
@@ -7,42 +9,52 @@
       Ritam Grada
     </div>
   </div>
+
+  <!--Ovde se prikazuje slika za čiji prikaz je prethodno bilo potrebno dodati assets folder u angular.json fajl-->
   <div class="image">
     <img src="../../assets/images/sign-in-rb.png" alt="sign-in">
   </div>
+
+  <!-- ovde definišemo polje forme i njene kontrole koristimo FormGroup i podelemnete FormControl da bismo definisali formu -->
   <form class="form" [formGroup]="signInForm" (ngSubmit)="onSubmit()">
     <div class="title-form">
       Ulogujte se:
     </div>
+
+    <!-- ovo je jedna form kontrola zdužena za username -->
     <mat-form-field class="full-width">
-      <mat-label>Email</mat-label>
-      <input type="email" matInput formControlName="email" placeholder="Ex. pat@example.com">
-      @if (signInForm.get('email')?.hasError('required')) {
-      <mat-error>Email je obavezan</mat-error>
-      }
-      @if (signInForm.get('email')?.hasError('email')) {
-      <mat-error>Molimo vas unesite validnu email adresu</mat-error>
+      <mat-label>Korisničko ime</mat-label>
+      <input type="text" matInput formControlName="username" placeholder="Unesite korisničko ime">
+      <!-- ovde proveravamo da li je korisnik uneo vrednost i ako nije prikazujemo error -->
+      @if (signInForm.get('username')?.hasError('required')) {
+      <mat-error>Korisničko ime je obavezno</mat-error>
       }
     </mat-form-field>
 
+    <!-- ovo je jedna form kontrola zdužena za lozinku -->
     <mat-form-field class="full-width">
       <mat-label>Lozinka</mat-label>
       <input type="password" matInput formControlName="password" placeholder="Lozinka">
+      <!-- ovde proveravamo da li je korisnik uneo vrednost i ako nije prikazujemo error -->
       @if (signInForm.get('password')?.hasError('required')) {
       <mat-error>Lozinka je obavezna</mat-error>
       }
+      <!-- ovde proveravamo da li je korisnik uneo lozinku dužu od 6 karaktera i ako nije prikazujemo error -->
       @if (signInForm.get('password')?.hasError('minlength')) {
       <mat-error>Uneta lozinka mora imati više od 6 karaktera</mat-error>
       }
     </mat-form-field>
 
+    <!-- dugme za slanje forme, u smaoj formi je zadata (ngOnSubmit) kontrola koja je definisana u .ts fajlu -->
+    <!-- tip ovog dugmeta je zadata sa submit stoga kada se ono klikne aktiviraće se funkcija iz .ts onSubmit()-->
+    <!-- ako forma nije validna, dugme će biti onemogućeno -->
     <button class="full-width" matButton="filled" type="submit" [disabled]="!signInForm.valid">
       Uloguj se
     </button>
+
+    <!-- link koji vodi na stranicu za registraciju, kada se klikne aktivira se funkcija iz .ts onSignUpPage() -->
     <div class="link" (click)="onSignUpPage()">
       Nemate nalog? Registrujte se
-
     </div>
   </form>
-
 </div>
