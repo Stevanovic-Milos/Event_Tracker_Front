@@ -7,10 +7,10 @@ import { ApiService } from './api.service';
   selector: 'app-home',
   //CommonModule nam omogucava da koristimo osnovne angularove selektore kao sto je ngIf
   imports: [CommonModule],
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  templateUrl: './home.html',
+  styleUrls: ['./home.scss']
 })
-export class HomeComponent implements OnInit {
+export class Home implements OnInit {
 
   //Inicijalizujemo event na nas model Event koji ima deklarisane atribute
   events: Event[] = [];

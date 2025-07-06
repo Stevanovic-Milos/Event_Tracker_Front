@@ -1,0 +1,50 @@
+<div class="container">
+
+    <div class="image">
+        <img src="../../assets/images/sign-in-rb.png" alt="sign-in">
+    </div>
+    <form class="form" [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+        <div class="title-form">
+            Registracija:
+        </div>
+        <mat-form-field class="full-width">
+            <mat-label>Email</mat-label>
+            <input type="email" matInput formControlName="email" placeholder="Ex. pat@example.com">
+            @if (signUpForm.get('email')?.hasError('required')) {
+            <mat-error>Email je obavezan</mat-error>
+            }
+            @if (signUpForm.get('email')?.hasError('email')) {
+            <mat-error>Molimo vas unesite validnu email adresu</mat-error>
+            }
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+            <mat-label>Lozinka</mat-label>
+            <input type="password" matInput formControlName="password" placeholder="Lozinka">
+            @if (signUpForm.get('password')?.hasError('required')) {
+            <mat-error>Lozinka je obavezna</mat-error>
+            }
+            @if (signUpForm.get('password')?.hasError('minlength')) {
+            <mat-error>Uneta lozinka mora imati više od 6 karaktera</mat-error>
+            }
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+            <mat-label>Potvrdi Lozinku</mat-label>
+            <input type="password" matInput formControlName="confirmPassword" placeholder="Potvrdi lozinku">
+            @if (signUpForm.get('confirmPassword')?.hasError('required')) {
+            <mat-error>Potvrda lozinke je obavezna</mat-error>
+            }
+            @if (signUpForm.hasError('passwordMismatch')) {
+            <mat-error>Lozinke se ne poklapaju</mat-error>
+            }
+        </mat-form-field>
+
+        <button class="full-width" matButton="filled" color="primary" type="submit" [disabled]="!signUpForm.valid">
+            Registrujte se
+        </button>
+        <div class="link" (click)="onSignInPage()">
+            Već imate nalog? Ulogujte se
+        </div>
+    </form>
+</div>

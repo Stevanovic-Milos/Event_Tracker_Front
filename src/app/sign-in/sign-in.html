@@ -1,0 +1,48 @@
+<div class="container">
+  <div class="left">
+    <div class="welcome">
+      Dobrodošli u našu aplikaciju,
+    </div>
+    <div class="title">
+      Ritam Grada
+    </div>
+  </div>
+  <div class="image">
+    <img src="../../assets/images/sign-in-rb.png" alt="sign-in">
+  </div>
+  <form class="form" [formGroup]="signInForm" (ngSubmit)="onSubmit()">
+    <div class="title-form">
+      Ulogujte se:
+    </div>
+    <mat-form-field class="full-width">
+      <mat-label>Email</mat-label>
+      <input type="email" matInput formControlName="email" placeholder="Ex. pat@example.com">
+      @if (signInForm.get('email')?.hasError('required')) {
+      <mat-error>Email je obavezan</mat-error>
+      }
+      @if (signInForm.get('email')?.hasError('email')) {
+      <mat-error>Molimo vas unesite validnu email adresu</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Lozinka</mat-label>
+      <input type="password" matInput formControlName="password" placeholder="Lozinka">
+      @if (signInForm.get('password')?.hasError('required')) {
+      <mat-error>Lozinka je obavezna</mat-error>
+      }
+      @if (signInForm.get('password')?.hasError('minlength')) {
+      <mat-error>Uneta lozinka mora imati više od 6 karaktera</mat-error>
+      }
+    </mat-form-field>
+
+    <button class="full-width" matButton="filled" type="submit" [disabled]="!signInForm.valid">
+      Uloguj se
+    </button>
+    <div class="link" (click)="onSignUpPage()">
+      Nemate nalog? Registrujte se
+
+    </div>
+  </form>
+
+</div>
