@@ -107,10 +107,10 @@ export class SignUp implements OnInit {
         //u slučaju greške, ispisujemo grešku u konzoli i obaveštavamo korisnika
         //ako je greška 400, to znači da korisničko ime već postoji
         error: (error) => {
-          if (error.status === 409) {
-            alert('Uneto korisničko ime već postoji. Molimo pokušajte sa drugim korisničkim imenom.');
+            alert('Došlo je do neočekivane greške.');
+            console.log('Greška prilikom registracije', error);
           }
-        }
+        
       });
 
     }
