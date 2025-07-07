@@ -9,8 +9,12 @@ export interface Event {
 
 //Ovo je model korisnika koji u bazi ima id, username, password, token je jwt token koji generiše server prilikom prijave korisnika  
 export interface User {
+  success: boolean; // Ovo je dodat atribut koji označava da li je operacija uspešna
   id: number;
   username: string;
   password: string;
+  firstname: string;
+  lastname: string;
+  email: string;
   token: string; 
 }

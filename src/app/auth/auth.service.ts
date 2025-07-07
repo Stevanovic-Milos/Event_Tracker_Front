@@ -35,10 +35,13 @@ export class AuthService {
     // Metoda za registraciju novog korisnika
     // Ova metoda takođe šalje POST zahtev ka serveru sa korisničkim imenom i lozinkom
     // Vraća Observable koji se može pretplatiti u komponentama da bi se pratila uspešnost operacije za razliku od signIn metode, ova metoda ne vraća token jer se koristi za kreiranje novog korisnika
-    signUp(username: string, password: string): Observable<User> {
+    signUp(username: string, password: string, firstname: string, lastname: string, email: string): Observable<User> {
         return this.http.post<User>(`${this.apiUrl}/api/auth/signup`, {
             username,
             password,
+            firstname,
+            lastname,
+            email
         });
     }
 }

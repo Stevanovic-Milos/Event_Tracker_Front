@@ -4,7 +4,7 @@ import { ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { routes } from './app.routes';
-import { AuthGuard } from './Shared/authGuard.service';
+import { AuthGuard } from './auth/authGuard.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [

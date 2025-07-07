@@ -10,7 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { Router } from '@angular/router';
-import { AuthService } from '../Shared/auth.service';
+import { AuthService } from '../auth/auth.service';
 import { CookieService } from 'ngx-cookie-service';
 
 @Component({

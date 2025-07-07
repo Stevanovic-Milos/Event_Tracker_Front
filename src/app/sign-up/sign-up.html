@@ -22,6 +22,33 @@
             <mat-error>Korisničko ime je obavezno</mat-error>
             }
         </mat-form-field>
+             <mat-form-field class="full-width">
+            <mat-label>Ime</mat-label>
+            <input type="text" matInput formControlName="firstname" placeholder="Unesite ime">
+            <!--Ovde proveravamo da li je korisnik uneo vrednost i ako nije prikazujemo error-->
+            @if (signUpForm.get('firstname')?.hasError('required')) {
+            <mat-error>Ime je obavezno</mat-error>
+            }
+        </mat-form-field>
+             <mat-form-field class="full-width">
+            <mat-label>Prezime</mat-label>
+            <input type="text" matInput formControlName="lastname" placeholder="Unesite prezime">
+            <!--Ovde proveravamo da li je korisnik uneo vrednost i ako nije prikazujemo error-->
+            @if (signUpForm.get('lastname')?.hasError('required')) {
+            <mat-error>Prezime je obavezno</mat-error>
+            }
+        </mat-form-field>
+             <mat-form-field class="full-width">
+            <mat-label>Email</mat-label>
+            <input type="email" matInput formControlName="email" placeholder="Unesite email">
+            <!--Ovde proveravamo da li je korisnik uneo vrednost i ako nije prikazujemo error-->
+            @if (signUpForm.get('email')?.hasError('required')) {
+            <mat-error>Email je obavezan</mat-error>
+            }
+            @if(signUpForm.get('email')?.hasError('email')) {
+            <mat-error>Unesite ispravan email</mat-error>
+            }
+        </mat-form-field>
 
         <!--Ovo je jedna form kontrola zadužena za lozinku-->
         <mat-form-field class="full-width">

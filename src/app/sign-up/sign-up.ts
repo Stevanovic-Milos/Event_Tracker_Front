@@ -16,8 +16,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../Shared/auth.service';
+import { AuthService } from '../auth/auth.service';
 import { CookieService } from 'ngx-cookie-service';
+import { last } from 'rxjs';
 
 @Component({
   selector: 'app-sign-up',
@@ -52,6 +53,9 @@ export class SignUp implements OnInit {
   // FormGroup se koristi za grupisanje više kontrola u jednu logičku celinu
   signUpForm = new FormGroup({
     username: new FormControl<string>('', [Validators.required]),
+    firstname: new FormControl<string>('', [Validators.required]),
+    lastname: new FormControl<string>('', [Validators.required]),
+    email: new FormControl<string>('', [Validators.required, Validators.email]),
     password: new FormControl<string>('', [Validators.required, Validators.minLength(6)]),
     confirmPassword: new FormControl<string>('', [Validators.required, this.confirmPasswordValidator.bind(this)])
   });
@@ -74,23 +78,32 @@ export class SignUp implements OnInit {
     // Proveravamo da li je forma validna pre nego što pošaljemo podatke
     // Ako forma nije validna, ne šaljemo podatke 
     if (this.signUpForm.valid) {
-      const { username, password } = this.signUpForm.value;
+      const { username, password, firstname, lastname, email } = this.signUpForm.value;
       // Proveravamo da li su korisničko ime i lozinka uneti
       // Ako nisu, ne šaljemo podatke i vraćamo se iz funkcije
       // Ovo je važno da bismo sprečili slanje praznih podataka na server
-      if (!username || !password) {
+      if (!username || !password || !firstname || !lastname || !email) {
         return;
       }
       //pozivamo servis za registraciju korisnika
       //AuthService se koristi za autentifikaciju korisnika, a CookieService za rad sa kolačićima (cookies)
       //Router se koristi za navigaciju između stranica
-      this.authService.signUp(username, password).subscribe({
+      this.authService.signUp(username, password, firstname, lastname, email).subscribe({
         //ako je uspešna registracija, postavljamo token u kolačić i preusmeravamo korisnika na home stranicu
         //u slučaju uspeha, ispisujemo poruku u konzoli i obaveštavamo korisnika
         next: (response) => {
           console.log('Registracija uspešna', response);
-          this.onSignUpSucess(username, password);
+          if(response.success && response.token=='signed-up') {
+            this.onSignUpSucess(username, password);
+          }
+          if(response.token =='username-exists') {
+            alert('Korisničko ime već postoji. Molimo pokušajte sa drugim korisničkim imenom.');
+          }
+         if(response.token =='email-exists') {
+            alert('Email već postoji. Molimo pokušajte sa drugim email-om.');
+         }
         },
+    
         //u slučaju greške, ispisujemo grešku u konzoli i obaveštavamo korisnika
         //ako je greška 400, to znači da korisničko ime već postoji
         error: (error) => {
@@ -102,8 +115,12 @@ export class SignUp implements OnInit {
 
     }
   }
+  // Navigira korisnika na stranicu za prijavu
+  onSignInPage() {
+    this.router.navigate(['/sign-in']);
+  }
 
-  onSignUpSucess(username: string, password: string) {
+   onSignUpSucess(username: string, password: string) {
     this.authService.signIn(username, password).subscribe({
       next: (response) => {
         console.log('Prijava uspešna', response);
@@ -123,10 +140,6 @@ export class SignUp implements OnInit {
         }
       }
     });
-  }
-  // Navigira korisnika na stranicu za prijavu
-  onSignInPage() {
-    this.router.navigate(['/sign-in']);
   }
 
   // Proverava da li je korisnik već ulogovan i ako jeste, preusmerava ga na home stranicu
