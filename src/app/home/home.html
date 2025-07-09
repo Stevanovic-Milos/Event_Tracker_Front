@@ -10,7 +10,7 @@
   <div *ngIf="!loading && !error">
     <div *ngIf="events.length === 0">No events found</div>
     
-    <div *ngFor="let event of events" class="event-card">
+    <div *ngFor="let event of events" class="full-width">
       <h2>{{ event.eventName }}</h2>
     </div>
   </div>

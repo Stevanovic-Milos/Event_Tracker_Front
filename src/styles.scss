@@ -1,1 +1,94 @@
-/* You can add global styles to this file, and also import other style files */
+//glavna konfiguracija aplikacije za stilizaciju i teme
+//ovde se definišu globalne stilove, teme i boje koje će aplikacija koristiti
+@use '@angular/material' as mat;
+
+//ovim bojama je upotrebom var(--naziv-boje) moguće menjati boje u aplikaciji i prustipiti iz bilo kog aplikacijskog scss fajla
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #91B3FA;
+    --accent-color: #e74c3c;
+    --text-color: #333;
+    --background-color: #f5f5f5;
+}
+
+//ovde se definiše tema aplikacije koristeći Angular Material
+//ovim se postavlja paleta boja, tipografija i gustina (density
+html {
+    @include mat.theme((color: mat.$azure-palette,
+            typography: (plain-family: Roboto,
+                brand-family: Open Sans,
+                bold-weight: 900,
+                medium-weight: 500,
+                regular-weight: 300,
+            ),
+            density: 0,
+        ));
+}
+
+// Postavljanje osnovnih stilova za aplikaciju za telo
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    background-color: var(--background-color);
+}
+
+//sve ispod su nase kimponente koje cemo koristiti kao reusable u aplikaciji
+//one su stilizovane da budu fleksibilne i prilagodljive različitim sadržajima
+.container {
+    max-width: 1200px;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+
+}
+
+.form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.image {
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+
+    img {
+        max-width: 100%;
+        height: auto;
+        object-fit: contain;
+        border-radius: 8px;
+    }
+}
+
+.title {
+    font-size: 40px;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.title-form {
+    width: 100%;
+    text-align: left;
+    margin-bottom: 16px;
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--primary-color);
+}
+
+.link {
+    color: var(--primary-color);
+    text-decoration: underline;
+    cursor: pointer;
+    margin-top: 10px;
+}
