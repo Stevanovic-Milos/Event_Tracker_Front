@@ -1,2 +1,7 @@
-<!-- Ovo je srž svega router-outlet radi kompletnu navigaciju i rad sa savkom drugom komponentom sa ovim ovde i konfiguracijum ruta svaka komponenta je ubačena u naš front -->
-<router-outlet></router-outlet>
+<!-- ovo je nasa glavna konfiguracija aolikacije i mi ovde proveravamo na kojoj smo ruti -->
+ <!-- ako je ruta razlicita od AuthPage(to su nase rute signin signup i /) onda ucitavamo sidebar u okviro koga se sve ucitava -->
+@if (!isAuthPage) {
+<app-sidebar></app-sidebar>
+}
+<!-- ukoliko je ruta bas ta AuthPage onda ucitavamo nas router outlet direktno -->
+@else {<router-outlet></router-outlet>}

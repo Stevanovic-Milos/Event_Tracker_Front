@@ -1,0 +1,137 @@
+.toolbar {
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    height: 64px;
+    color: var(--background-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+
+    .icon {
+        color: var(--background-color);
+
+        &:hover {
+            opacity: 0.9;
+        }
+    }
+
+    .spacer {
+        flex: 1 1 auto;
+    }
+
+    .username {
+        font-size: 1rem;
+        padding-right: 12px;
+        font-weight: 500;
+    }
+}
+
+.side-nav {
+    height: auto;
+    width: 240px;
+    position: fixed;
+    top: 64px;
+    bottom: 0;
+    background: var(--primary-color);
+    color: var(--background-color);
+    transition: var(--transition);
+    z-index: 90;
+    display: flex;
+    flex-direction: column;
+    //pomeramo inicijalno da bi kada vratimo sve bilo na 0
+    transform: translateX(-235px); 
+
+    &.open {
+        transform: translateX(0); 
+        pointer-events: auto; 
+    }
+
+    .sidenav-header {
+        padding: 22px 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        h2 {
+            font-size: 1.15rem;
+            margin: 0;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+    }
+
+    .nav-list {
+        padding: 12px 8px;
+        flex-grow: 1;
+    }
+
+    .nav-item {
+        padding: 14px 16px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        border-radius: 24px;
+        color: var(--background-color);
+        text-decoration: none;
+        transition: var(--transition);
+        margin: 4px 0;
+        font-weight: 400;
+
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.253);
+        }
+
+        &.active {
+            background-color: var(--background-color);
+            color: var(--primary-color);
+            font-weight: 500;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-icon {
+            width: 22px;
+            height: 22px;
+            transition: var(--transition);
+        }
+
+        .nav-title {
+            font-size: 0.95rem;
+        }
+    }
+}
+
+.content {
+    flex: 1;
+    background: var(--background-color);
+    padding-top: 64px;
+    transition: var(--transition);
+    box-sizing: border-box;
+
+    &.side-open {
+        margin-left: 240px;
+    }
+}
+
+@media (max-width: 768px) {
+    .side-nav {
+        box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .content {
+        padding: 20px;
+
+        //na telefonu ne gurmao content u levo
+        &.side-open {
+            margin-left: 0;
+        }
+    }
+}
