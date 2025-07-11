@@ -40,7 +40,7 @@ export class SignIn implements OnInit {
   //ngOnInit je metoda koja se poziva kada se komponenta inicijalizuje
   //ovde cemo proveriti da li je korisnik vec ulogovan i ako jeste, preusmeriti ga na home stranicu
   ngOnInit() {
-    this.redirectToHome();
+    this.redirectToEvent();
   }
 
   //ovde definišemo formu i njene kontrole
@@ -66,7 +66,7 @@ export class SignIn implements OnInit {
               //ako je autentifikacija uspesna, dobijamo token koji cemo sacuvati u cookies
               //token cemo koristiti za autentifikaciju u buducim zahtevima
               this.cookieService.set('auth_token', response.token);             
-              this.router.navigate(['/home'])
+              this.router.navigate(['/event'])
             } else {
               console.error('Token nije pronađen u odgovoru');
             }
@@ -86,9 +86,9 @@ export class SignIn implements OnInit {
 
   //ova funkcija proverava da li je korisnik vec ulogovan i ako jeste, preusmerava ga na home stranicu
   //ovo je korisno da se ne bi korisnik vracao na login stranicu
-  redirectToHome() {
+  redirectToEvent() {
     if(this.cookieService.get('auth_token')) {
-      this.router.navigate(['/home']);
+      this.router.navigate(['/event']);
     }
   }
 

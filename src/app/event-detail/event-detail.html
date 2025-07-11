@@ -1,0 +1,129 @@
+<div class="event-container">
+    <!-- ovo je samo za sad kad nema eventa tipa neko rucno unese neki glup id treba se formira cela nova stranica i da se radi redirekcija -->
+    <div class="noevent" *ngIf="!event">
+        Element koji pokusavate da pronadjete ne postoji
+    </div>
+    <!-- Stanje učitavanja -->
+    <div *ngIf="loading" class="loading-state">
+        <p>Učitavanje detalja događaja...</p>
+    </div>
+
+    <!--Ako se ne ucitava i nema gresaka ucitavamo sliku-->
+    <div *ngIf="!loading && !error && event" class="event-content">
+        <!-- Ovo je zaglavlje stranice odnosno cela gornja sekcija sa slikom i dodatnim informacijama -->
+        <div class="event-header">
+            <div class="event-image-container">
+                <!-- ovde ucitavamo sliku za ciji url name bek vraca tacno adresu -->
+                <img [src]="event.eventImageUrl" [alt]="event.eventName" class="event-image" />
+                <!-- ovde proveravamo da li je rasprodato i ako jeste prikazujemo badge sa rasprodato -->
+                <div *ngIf="event.soldOut" class="sold-out-badge">Rasprodato</div>
+                <!-- ovde se prikazuje data-badge odnosno deo slike koji podseca na kalendar gde je prikazan mesec i ispod dan -->
+                <div class="date-badge">
+                    <!-- date je angular default pipe kako je podesen u app.configu na srbiju preko tog pajpa se mogu formatirati datumi na lokalne vrednosti seckati i uredjivati po volji -->
+                    <span class="month">{{ event.eventDate | date:'MMM' }}</span>
+                    <span class="day">{{ event.eventDate | date:'dd'}}</span>
+                </div>
+            </div>
+
+            <!-- ovo je sekcija sa osnovnim informacijama o eventu odnosno zanr eventa i minimum godina -->
+            <div class="event-info">
+                <div class="event-meta">
+                    <span class="genre-tag">{{ event.genre }}</span>
+                    <span class="age-tag">{{ event.minAge }}+</span>
+                </div>
+                <!-- ovo je ono sto prikazujemo  na smaom vrhu naziv eventa i izvodjaca -->
+                <h1 class="event-title">{{ event.eventName }}</h1>
+                <h2 class="artist-name">{{ event.artist }}</h2>
+
+                <!-- ovde prikazujemo osnovne informacije o eventu kao sto su datum vreme i lokacija -->
+                <div class="event-details">
+                    <div class="detail-item">
+                        <mat-icon>event</mat-icon>
+                        <!-- ponovo koristimo pipe za datum samo sada parsiramo ceo datum direktno u formatu kako nama odgovara MMM daje mesec nazivom dok ostalo parsira ostatk dana i godine normalno -->
+                        <span>{{ event.eventDate | date:'MMM.dd.yyyy'}}</span>
+                        <!-- ovde se proverava da li postoji krjanji datum eventa i ako postoji prikazuje se u istom formatu kao pocetak
+                        krajnji datum ne mora uvek psotojati to je smao za eventove koji traju vise dana  -->
+                        <span *ngIf="event.endDate"> - {{ event.endDate | date:'MMM.dd.yyyy'}}</span>
+                    </div>
+
+                    <!-- ovde prikazujemo vreme dogadjaja  -->
+                    <div class="detail-item">
+                        <mat-icon>schedule</mat-icon>
+                        <!-- pipe short time nam daje vreme bez sekundi i oznake tipa vremenske zone i drugo odnosno smao sate i minute -->
+                        <span>{{ event.eventDate | date:'shortTime'}}</span>
+                    </div>
+                    <!-- ovde dajemo podatke o preciznoj lokaciji gradu i drzavi eventa -->
+                    <div class="detail-item">
+                        <mat-icon>location_on</mat-icon>
+                        <span>{{ event.venue }}, {{ event.city }}, {{ event.country }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sekcija za karte -->
+        <div class="ticket-section">
+            <div class="price-info">
+                <!-- ovde prikazujemo cenu nase karte -->
+                <span class="price">
+                    {{ event.ticketPrice | currency:'RSD' }}
+                </span>
+                <!-- u ovom delu ukoliko sve karte nisu rasprodate prikazujemo broj karata koje su dostupne -->
+                <span class="availability" *ngIf="!event.soldOut">
+                    {{ event.availableTickets }} karata dostupno
+                </span>
+            </div>
+            <!-- ovo je deo za kupovinu karte u sustini mi redirektujemo korisnika koji klikne na link na sajt za kupovinu karte koji se nalazi u bazi u slucaju d akarte nisu rasprodate -->
+            <a *ngIf="!event.soldOut" [href]="event.ticketWebsiteUrl" class="ticket-button">
+                <img src="/assets/icons/ticket.svg" alt=""> Kupi karte
+            </a>
+            <!-- ovde prikazujemo poruku ukoliko su sve karte rasprodate -->
+            <div *ngIf="event.soldOut" class="sold-out-message">
+                <mat-icon>block</mat-icon>
+                <span>Događaj je rasprodat</span>
+            </div>
+        </div>
+        <!-- Informacije o organizatoru -->
+        <div class="extra-with-video">
+            <div class="extra-details">
+                <!-- Opis događaja -->
+                <div class="description-section">
+                    <h3>O događaju</h3>
+                    <p>{{ event.description }}</p>
+                </div>
+                <h3>Organizator</h3>
+                <div class="organizer-info">
+                    <!-- ovde radimo pipe za odsecanje kod prikazivanja avatara gde odsecamo prvo slovo i prikazujemo ga u avatr krugu -->
+                    <div class="organizer-avatar">{{ event.organizer | slice:0:1}}</div>
+                    <!-- ovde se nalaze podaci o organiztoru dogadjaja -->
+                    <div class="organizer-details">
+                        <span class="organizer-name">{{ event.organizer }}</span>
+                        <span class="organizer-label">Organizator događaja</span>
+                    </div>
+                </div>
+                <!-- u ravni sa organizatorom prikazujemo i lokaciju koju cmeo izgurati skroz desno -->
+                <div class="map-section">
+                    <h3>Lokacija</h3>
+                    <span>{{ event.venue }}</span>
+                </div>
+            </div>
+            <!-- ucitavamo iframe sa video za zoutube -->
+            <div class="video">
+                <!-- klasicna iframe konfiguracija za video -->
+                <!-- ovaj deo je jako zanimljiv kako je youtube format jasan po pitanju embedovanja pocetak c euvek biti isti
+                ali kako covek nece kopirati iframe vec link taj link ce pocinjati sa https://youtu.be/ kao sto vidimo
+                ovd eimamo 17 elemenata
+                pa cmeo pre nego ubacimo nas kod kako bi omogucili adminu akda dodaje video samo da kopira link me ovde
+                odseci nepotreban deo
+                sa pipom slice i lepo sve spojiti takodje smo postavili autoplay na 1  takodje koristimo nas rucno napravljen safeUrl pipe koji nam omogucava da overrajdujemo 
+                angularovu direktnu konfiguraciju koja ne dozvoljava eksterne linkove u elementima-->
+                <iframe width="560" height="315"
+                    [src]="'https://www.youtube.com/embed/' + (event.eventVideoUrl | slice:17) + '&autoplay=1' | safeUrl"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+    </div>
+</div>

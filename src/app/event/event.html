@@ -1,0 +1,63 @@
+<!-- u ovoj sekciji na ovoj stranici se nalaze svi nasi eventovi -->
+<div class="event-container">
+  <!-- ovo je za sada ovako bice formirana nova loading komponenta koja ce se koristiti za sva ucitavnja a sad da ima nesto cisto -->
+  <div *ngIf="loading" class="loading">Ucitavam koncerte...</div>
+  <!-- ovo prikazujemo ukoliko se zavrsilo ucitavanje a u bazi nemamo eventove -->
+  <div *ngIf="!loading && events.length === 0" class="no-events">
+    Nema koncerata za prikaz
+  </div>
+
+  <!-- ovo je glavni grid gde su prikazani svi eventovi proveravamo da l ije loading zavrsen i da li je vise od 0 eventova i tek tada kreiramo grid -->
+  <div *ngIf="!loading && events.length > 0" class="events-grid">
+    <!-- pravimo petlju kde iteriramo kao objekat event kroz nasu listu objekata events na klik pozivamo funkciju openEventsDetails i prosledjujemo joj id-->
+    <div *ngFor="let event of events" class="event-card" (click)="openEventDetails(event.id)">
+      <!-- sekcija slike eventa -->
+      <div class="event-image">
+        <!-- nismo krirali eksterni bucket vec se sike nalaze lokalno u nasem assets/images folderu dok nam baza sadrzi url do slike -->
+        <img [src]="event.eventImageUrl || 'assets/default-event.jpg'" [alt]="event.eventName">
+        <!-- ukoliko je rasprodato ucitavamo ans badge koji se nalazi na slici -->
+        <span *ngIf="event.soldOut" class="sold-out-badge">Rasprodato</span>
+      </div>
+
+      <!-- ovde se nalaze detalji eventa kao sto su naziv eventa zanr i izvodjac -->
+      <div class="event-details">
+        <h2>{{ event.eventName }}</h2>
+        <p class="artist">{{ event.artist }}</p>
+        <p class="genre">{{ event.genre }}</p>
+        <!-- koristimo Mat ikonice za prikaz ikonica ovde -->
+        <div class="info-row">
+          <mat-icon>calendar_today</mat-icon>
+          <!-- ovde prikazujemo mesec odrzavanja koncerta koristimo pipe koji nam omogucava da iz date formata iz baze odsecemo mesec ito u formatu naziva na srpskom -->
+          <span>{{ event.eventDate | date:'MMMM'}} </span>
+        </div>
+
+        <!-- u ovoj skeciji prikazujemo grad i drzavo odrzavanja -->
+        <div class="info-row">
+          <mat-icon>location_on</mat-icon>
+          <span>{{ event.city }}, {{ event.country }}</span>
+        </div>
+
+        <!-- u ovoj sekciji prikazujemo godine, od koliko je dozovljen pristup -->
+        <div class="info-row">
+          <mat-icon>people</mat-icon>
+          <span *ngIf="event.minAge > 0">{{ event.minAge }}+</span>
+          <!-- ukoliko je postavljeno na 0 dozvoljeno je svim uzrastima -->
+          <span *ngIf="event.minAge === 0">Svi uzrasti</span>
+        </div>
+
+        <!-- ovde prikazujemo opis gde preko naseg slice pajpa secemo tekst na 100 karaktera od 0 do 100  -->
+        <p class="description">{{ event.description | slice:0:100 }}</p>
+        <!-- ovde prikazujemo cenu kako smo lokalno postavili parametre na Srbiju, cenu samo deklarismeo na RSD i pajp currency odradi svu magiju konverzije u nas format -->
+        <div class="price-row">
+          <span class="price">
+            {{ event.ticketPrice | currency:'RSD' }}
+          </span>
+          <!-- kupi fugme gde na osnovu toga da li je moguce kupiti kartu prikazujemo Kupi karte ili da se pridruzi listi -->
+          <a [href]="event.ticketWebsiteUrl" class="buy-link" mat-raised-button color="primary">
+            {{ event.soldOut ? 'Pridruži se listi čekanja' : 'Kupi Karte' }}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -18,7 +18,6 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../auth/auth.service';
 import { CookieService } from 'ngx-cookie-service';
-import { last } from 'rxjs';
 
 @Component({
   selector: 'app-sign-up',
@@ -47,7 +46,7 @@ export class SignUp implements OnInit {
   // ngOnInit je metoda koja se poziva kada se komponenta inicijalizuje
   // Ovdje proveravamo da li je korisnik već ulogovan i ako jeste, preusmeravamo ga na home stranicu
   ngOnInit() {
-    this.redirectToHome();
+    this.redirectToEvent();
   }
   // Definišemo formu i njene kontrole koristeći FormGroup i FormControl
   // FormGroup se koristi za grupisanje više kontrola u jednu logičku celinu
@@ -128,7 +127,7 @@ export class SignUp implements OnInit {
         // Token ćemo koristiti za autentifikaciju u budućim zahtevima
         if (response.token) {
           this.cookieService.set('auth_token', response.token);
-          this.router.navigate(['/home']);
+          this.router.navigate(['/event']);
         } else {
           console.error('Token nije pronađen u odgovoru');
         }
@@ -144,9 +143,9 @@ export class SignUp implements OnInit {
 
   // Proverava da li je korisnik već ulogovan i ako jeste, preusmerava ga na home stranicu
   // Ovo je korisno da se ne bi korisnik vraćao na registracionu stranicu
-  redirectToHome() {
+  redirectToEvent() {
     if (this.cookieService.get('auth_token')) {
-      this.router.navigate(['/home']);
+      this.router.navigate(['/event']);
     }
   }
 }
