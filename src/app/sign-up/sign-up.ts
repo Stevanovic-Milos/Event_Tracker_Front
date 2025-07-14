@@ -18,6 +18,7 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../auth/auth.service';
 import { CookieService } from 'ngx-cookie-service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-sign-up',
@@ -39,7 +40,8 @@ export class SignUp implements OnInit {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private toastr: ToastrService
   ) {
   }
 
@@ -96,17 +98,17 @@ export class SignUp implements OnInit {
             this.onSignUpSucess(username, password);
           }
           if(response.token =='username-exists') {
-            alert('Korisničko ime već postoji. Molimo pokušajte sa drugim korisničkim imenom.');
+             this.toastr.warning('Korisničko ime već postoji. Molimo pokušajte sa drugim korisničkim imenom.');
           }
          if(response.token =='email-exists') {
-            alert('Email već postoji. Molimo pokušajte sa drugim email-om.');
+             this.toastr.warning('Email već postoji. Molimo pokušajte sa drugim email-om.');
          }
         },
     
         //u slučaju greške, ispisujemo grešku u konzoli i obaveštavamo korisnika
         //ako je greška 400, to znači da korisničko ime već postoji
         error: (error) => {
-            alert('Došlo je do neočekivane greške.');
+             this.toastr.error('Došlo je do neočekivane greške.');
             console.log('Greška prilikom registracije', error);
           }
         
@@ -135,7 +137,7 @@ export class SignUp implements OnInit {
       error: (error) => {
         console.error('Neuspelo logovanje', error);
         if (error.status === 401) {
-          alert('Pogrešno korisničko ime ili lozinka. Molimo pokušajte ponovo.');
+          this.toastr.warning('Pogrešno korisničko ime ili lozinka. Molimo pokušajte ponovo.');
         }
       }
     });

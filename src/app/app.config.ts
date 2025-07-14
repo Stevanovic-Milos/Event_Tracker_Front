@@ -7,6 +7,10 @@ import { routes } from './app.routes';
 import localeSrLatn from '@angular/common/locales/sr-Latn'; // Import Serbian locale
 import { AuthGuard } from './auth/authGuard.service';
 import { registerLocaleData } from '@angular/common';
+import { provideToastr } from 'ngx-toastr';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { AdminGuard } from './auth/adminGuard.service';
+
 
 registerLocaleData(localeSrLatn, 'sr-Latn');
 export const appConfig: ApplicationConfig = {
@@ -17,10 +21,14 @@ export const appConfig: ApplicationConfig = {
     //provideHttpClient se koristi za konfiguraciju HTTP klijenta u Angular aplikaciji
     //omogućava slanje HTTP zahteva ka serveru i vraća Observable na koji se pretplaćujemo u komponentama
     provideHttpClient(),
+    provideAnimations(),
+    provideToastr(),
     //AuthGuard se koristi za zaštitu ruta u Angular aplikaciji
     //proverava da li je korisnik ulogovan pre nego što mu dozvoli pristup određenim stranicama
     AuthGuard,
-    { provide: LOCALE_ID, useValue: 'sr-Latn' } 
+    //adminn guard dozvoljava pristup samo adminima
+    AdminGuard,
+    { provide: LOCALE_ID, useValue: 'sr-Latn' }
 
 
   ]

@@ -7,6 +7,8 @@ import { RouterModule } from '@angular/router';
 import { User } from '../Models/models';
 import { UserDataService } from '../Shared/userData.service';
 import { AuthService } from '../auth/auth.service';
+import { ToastrService } from 'ngx-toastr';
+import { AdminGuard } from '../auth/adminGuard.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -25,7 +27,7 @@ export class Sidebar implements OnInit {
   //korisnik moze biti i nedefinisan u slucaju ucitavnja bara bez ulogovanog korisnika sto ce biti dodato u kasnijim impplementacijama
   user: User | undefined
 
-  constructor(private userDataService: UserDataService, private authService: AuthService) { }
+  constructor(private userDataService: UserDataService, private authService: AuthService, private toastr: ToastrService, private adminGuard: AdminGuard) { }
 
   //na initu ucitavamo sve podatke o ulogovanom korisniku
   ngOnInit(): void {
@@ -47,7 +49,7 @@ export class Sidebar implements OnInit {
         this.user = response;
       },
       error: (error) => {
-        alert("Došlo je do greške priliko dobijanja korisničkih podataka")
+        this.toastr.warning("Došlo je do greške priliko dobijanja korisničkih podataka")
         console.log(error)
       }
     })
@@ -56,9 +58,19 @@ export class Sidebar implements OnInit {
   //funkcija za potvrdu logouta
   confirmLogout() {
     //ako je odgovor ok vraca true 
-    if ( confirm("Da li ste sigurni da želite da se odjavite?")) {
+    if (confirm("Da li ste sigurni da želite da se odjavite?")) {
       //servisni poziv koji brise auth token iz cooke storage
       this.authService.logout();
+    }
+  }
+  //proveravamo da li je korisnik amdin da bi mu uopste dozvolili da vidi admin sekciju za dodavanje eventova
+  //sekcija je svakako zasticena auth guardom i na beku je zasticena authorizacijom ali ovo je smao vizuelne prirode da je obican korisnik uopste ne vidi
+  isAdmin() {
+    if (this, this.user?.role == "ROLE_ADMIN") {
+      return true;
+    }
+    else {
+      return false;
     }
   }
 }
