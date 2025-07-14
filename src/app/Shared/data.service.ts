@@ -82,8 +82,11 @@ export class DataService {
     //Ova metoda prima URL i vraća Observable sa tipom T
     //Ako dođe do greške, poziva se handleError metoda koja će obraditi grešku i preusmeriti korisnika na stranicu za prijavu ako je greška 401 (Unauthorized)
     delete<T>(url: string): Observable<T> {
-        return this.http.delete<T>(url, { headers: this.getAuthHeaders() })
-            .pipe(catchError(this.handleError.bind(this)));
+        return this.http.delete<T>(url, {
+            headers: this.getAuthHeaders()
+        }).pipe(
+            catchError(this.handleError.bind(this))
+        );
     }
 
     //ova metoda se koristi za slanje PATCH zahteva ka serveru sa nasim headerima za autentifikaciju

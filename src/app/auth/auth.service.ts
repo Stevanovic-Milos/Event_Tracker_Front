@@ -7,6 +7,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../Environments/environment';
 import { User } from '../Models/models';
 import { CookieService } from 'ngx-cookie-service';
+import { ToastrService } from 'ngx-toastr';
 
 //injectable decorator se koristi da bi Angular znao da je ova klasa servis koji može biti injektovan u druge komponente ili servise
 //providedIn: 'root' znači da će ovaj servis biti dostupan u celoj aplikaciji, bez potrebe da ga ručno dodajemo u providers niz u modulu
@@ -20,7 +21,7 @@ export class AuthService {
 
     // HttpClient se koristi za slanje HTTP zahteva ka serveru
     // Ovaj servis se injektuje u konstruktoru klase AuthService
-    constructor(private http: HttpClient, private cookieService: CookieService) { }
+    constructor(private http: HttpClient, private cookieService: CookieService, private toastr: ToastrService) { }
 
     // Metode za  sign in korisnika, sa dva parametra: username i password
     // Ove metode šalju POST zahteve ka serveru sa korisničkim imenom i lozinkom
@@ -49,7 +50,7 @@ export class AuthService {
     //interceptor koji smo postavili preko auth garda ce nas automatski vratiti na sign-in stranicu cim ostanemo bez tokena
     logout() {
         if (!this.cookieService.get('auth_token')) {
-            alert("Morate biti ulogovani da biste se odjavili");
+            this.toastr.warning("Morate biti ulogovani da biste se odjavili");
             return;
         }
         this.cookieService.delete('auth_token');

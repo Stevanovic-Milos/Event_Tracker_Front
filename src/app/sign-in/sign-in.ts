@@ -12,6 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { CookieService } from 'ngx-cookie-service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-sign-in',
@@ -34,7 +35,8 @@ export class SignIn implements OnInit {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private cookieService: CookieService 
+    private cookieService: CookieService,
+    private toastr: ToastrService
   ) {}
 
   //ngOnInit je metoda koja se poziva kada se komponenta inicijalizuje
@@ -76,7 +78,7 @@ export class SignIn implements OnInit {
           error: (error) => {
             console.error('Neuspelo logovanje', error);
             if (error.status === 401) {
-              alert('Pogresno korisničko ime ili lozinka. Molimo pokušajte ponovo.');
+               this.toastr.error('Pogresno korisničko ime ili lozinka. Molimo pokušajte ponovo.');
             }
           }
         });
