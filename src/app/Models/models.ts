@@ -46,6 +46,7 @@ export interface MyResponse {
   success: boolean;
 }
 export interface EventData {
+  eventId?: number; //? oznacava da ovo polje nije obavezno
   eventName: string;
   artist: string;
   eventImageUrl: string;
@@ -62,4 +63,5 @@ export interface EventData {
   ticketPrice: number;
   venue: string;
   ticketWebsiteUrl: string;
+  soldOut?:boolean | null;
 }

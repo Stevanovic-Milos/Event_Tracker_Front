@@ -6,12 +6,13 @@ import { Router } from '@angular/router';
 import { EventService } from './event.service';
 import { MyEventsService } from '../my-events/my-events.service';
 import { ToastrService } from 'ngx-toastr';
+import { Loading } from '../loading/loading';
 
 
 @Component({
   selector: 'app-event',
   //CommonModule nam omogucava da koristimo osnovne angularove selektore kao sto je ngIf
-  imports: [CommonModule, MatIcon],
+  imports: [CommonModule, MatIcon, Loading],
   templateUrl: './event.html',
   styleUrls: ['./event.scss']
 })

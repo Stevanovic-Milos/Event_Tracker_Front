@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule, DatePipe } from '@angular/common';
-import { MatIcon } from '@angular/material/icon';
 import { Event } from '../Models/models';
 import { EventService } from '../event/event.service';
 import { SafeUrlPipe } from "../Pipes/safeUrl.pipe";
+import { Loading } from '../loading/loading';
 
 @Component({
   selector: 'app-event-detail',
   standalone: true,
-  imports: [CommonModule, MatIcon, SafeUrlPipe],
+  imports: [CommonModule, SafeUrlPipe, Loading],
   templateUrl: './event-detail.html',
   styleUrls: ['./event-detail.scss'],
   providers: [DatePipe]

@@ -4,11 +4,12 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { Event } from '../Models/models';
+import { Loading } from '../loading/loading';
 
 
 @Component({
   selector: 'app-my-events',
-  imports: [CommonModule, MatIcon],
+  imports: [CommonModule, MatIcon, Loading],
   templateUrl: './my-events.html',
   styleUrl: './my-events.scss'
 })

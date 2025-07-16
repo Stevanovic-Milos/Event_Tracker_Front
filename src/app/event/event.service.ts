@@ -29,4 +29,8 @@ export class EventService {
   createEvent(data: EventData) {
     return this.data.post<MyResponse>(`${this.apiUrl}/api/admin/events/create`, data);
   }
+  editEventById(data: EventData) {
+    return this.data.put<MyResponse>(`${this.apiUrl}/api/admin/events/edit`, data);
+
+  }
 }

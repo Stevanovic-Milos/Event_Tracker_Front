@@ -80,6 +80,8 @@ export class SignIn implements OnInit {
             if (error.status === 401) {
                this.toastr.error('Pogresno korisničko ime ili lozinka. Molimo pokušajte ponovo.');
             }
+            else
+              this.toastr.error('Server nije u mogućnosti da odgovori na vaš zahtev')
           }
         });
       }

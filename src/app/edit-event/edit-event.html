@@ -1,0 +1,228 @@
+<!-- ovo je sekcija kojoj smao admini imaju pristup ona sluzi za kreiranje novih eventova -->
+<div class="event-container">
+    <h1 class="event-title"> Izmeni događaj</h1>
+
+    <form [formGroup]="eventForm" (ngSubmit)="onSubmit()" class="event-form">
+        <!-- Naziv eventa i izvodjac -->
+        <div class="form-row">
+            <mat-form-field class="form-field-large">
+                <mat-label>Naziv događaja</mat-label>
+                <input matInput formControlName="eventName">
+                <mat-error *ngIf="eventForm.get('eventName')?.hasError('required')">
+                    Obavezno polje
+                </mat-error>
+            </mat-form-field>
+            <!-- klasa je form feald odnosno odavde izvlacimo nasu form controlu -->
+            <mat-form-field class="form-field-large">
+                <!-- ovo je lable odnosno tekst iznad -->
+                <mat-label>Izvođač</mat-label>
+                <!-- ovo oznacava d aje tip matInput odnosno polje za unos i da je naziv form controle artist ovaj nazi i naziv nase form controle u .ts fajlu mora biti isti -->
+                <input matInput formControlName="artist">
+                <!-- ovaj deo nam vraca validator on ce vratiti gresku required jer je polje obavezno ako je to slucaj prikazacemo je -->
+                <mat-error *ngIf="eventForm.get('artist')?.hasError('required')">
+                    Obavezno polje
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <!-- Linkvi za medija fajlove -->
+        <div class="form-section">
+            <h3 class="section-title">Medijski sadržaji</h3>
+
+            <div class="form-row">
+                <mat-form-field class="form-field-full">
+                    <mat-label>URL slike</mat-label>
+                    <input matInput formControlName="eventImageUrl" type="url"
+                        placeholder="https://example.com/image.jpg">
+                </mat-form-field>
+            </div>
+
+            <div class="form-row">
+                <mat-form-field class="form-field-full">
+                    <mat-label>URL videa (opciono)</mat-label>
+                    <input matInput formControlName="videoUrl" type="url" placeholder="https://example.com/video.mp4">
+                </mat-form-field>
+            </div>
+        </div>
+
+        <!-- Datum i Vreme -->
+        <div class="form-section">
+            <h3 class="section-title">Vreme održavanja</h3>
+
+            <div class="form-row">
+                <mat-form-field class="form-field-medium">
+                    <mat-label>Datum početka</mat-label>
+                    <input matInput [matDatepicker]="eventDatePicker" formControlName="eventDate">
+                    <mat-datepicker-toggle matSuffix [for]="eventDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #eventDatePicker></mat-datepicker>
+                    <mat-error *ngIf="eventForm.get('eventDate')?.hasError('required')">
+                        Obavezno polje
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="form-field-small">
+                    <mat-label>Vreme početka</mat-label>
+                    <input matInput [ngxMatTimepicker]="startTimePicker" formControlName="eventTime" [format]="24">
+                    <ngx-mat-timepicker-toggle matSuffix [for]="startTimePicker"></ngx-mat-timepicker-toggle>
+                    <ngx-mat-timepicker #startTimePicker [format]="24"></ngx-mat-timepicker>
+                    <mat-error *ngIf="eventForm.get('eventTime')?.hasError('required')">
+                        Obavezno polje
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="form-row">
+                <mat-form-field class="form-field-medium">
+                    <mat-label>Datum završetka</mat-label>
+                    <input matInput [matDatepicker]="endDatePicker" formControlName="endDate">
+                    <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #endDatePicker></mat-datepicker>
+                    <mat-error *ngIf="eventForm.get('endDate')?.hasError('required')">
+                        Obavezno polje
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="form-field-small">
+                    <mat-label>Vreme završetka</mat-label>
+                    <input matInput [ngxMatTimepicker]="endTimePicker" formControlName="endTime" [format]="24">
+                    <ngx-mat-timepicker-toggle matSuffix [for]="endTimePicker"></ngx-mat-timepicker-toggle>
+                    <ngx-mat-timepicker #endTimePicker [format]="24"></ngx-mat-timepicker>
+                    <mat-error *ngIf="eventForm.get('endTime')?.hasError('required')">
+                        Obavezno polje
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <!-- Lokacija -->
+        <div class="form-section">
+            <h3 class="section-title">Lokacija</h3>
+
+            <div class="form-row">
+                <mat-form-field class="form-field-medium">
+                    <mat-label>Grad</mat-label>
+                    <input matInput formControlName="city">
+                    <mat-error *ngIf="eventForm.get('city')?.hasError('required')">
+                        Obavezno polje
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="form-field-medium">
+                    <mat-label>Država</mat-label>
+                    <input matInput formControlName="country">
+                    <mat-error *ngIf="eventForm.get('country')?.hasError('required')">
+                        Obavezno polje
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="form-row">
+                <mat-form-field class="form-field-full">
+                    <mat-label>Lokacija</mat-label>
+                    <input matInput formControlName="venue">
+                    <mat-error *ngIf="eventForm.get('venue')?.hasError('required')">
+                        Obavezno polje
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <!-- Karte -->
+        <div class="form-section">
+            <h3 class="section-title">Ulaznice</h3>
+
+            <div class="form-row">
+                <mat-form-field class="form-field-small">
+                    <mat-label>Broj ulaznica</mat-label>
+                    <input matInput type="number" formControlName="availableTickets" min="0">
+                    <mat-error *ngIf="eventForm.get('availableTickets')?.hasError('required')">
+                        Obavezno polje
+                    </mat-error>
+                    <mat-error *ngIf="eventForm.get('availableTickets')?.hasError('min')">
+                        Minimalna vrednost je 0
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="form-field-small">
+                    <mat-label>Cena ulaznice RSD</mat-label>
+                    <input matInput type="number" formControlName="ticketPrice" min="0" step="500">
+                    <mat-error *ngIf="eventForm.get('ticketPrice')?.hasError('required')">
+                        Obavezno polje
+                    </mat-error>
+                    <mat-error *ngIf="eventForm.get('ticketPrice')?.hasError('min')">
+                        Minimalna vrednost je 0
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="form-field-small">
+                    <mat-label>Link za karte</mat-label>
+                    <input matInput type="text" formControlName="webUrlKarte">
+                    <mat-error *ngIf="eventForm.get('webUrlKarte')?.hasError('required')">
+                        Obavezno polje
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>Stanje eventa</mat-label>
+                    <mat-select formControlName="soldOut">
+                        <mat-option [value]="true">Rasprodato</mat-option>
+                        <mat-option [value]="false"> Nije rasprodato</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="eventForm.get('soldOut')?.hasError('required')">
+                        Molimo izaberite rasprodatost
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <!-- Dodatne informacije -->
+        <div class="form-section">
+            <h3 class="section-title">Dodatne informacije</h3>
+
+            <div class="form-row">
+                <mat-form-field class="form-field-medium">
+                    <mat-label>Žanr</mat-label>
+                    <input matInput formControlName="genre">
+                    <mat-error *ngIf="eventForm.get('genre')?.hasError('required')">
+                        Obavezno polje
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="form-field-small">
+                    <mat-label>Minimalni uzrast</mat-label>
+                    <input matInput type="number" formControlName="minAge" min="0">
+                    <mat-error *ngIf="eventForm.get('minAge')?.hasError('min')">
+                        Minimalna vrednost je 0
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="form-row">
+                <mat-form-field class="form-field-medium">
+                    <mat-label>Organizator</mat-label>
+                    <input matInput formControlName="organizer">
+                </mat-form-field>
+            </div>
+
+            <div class="form-row">
+                <mat-form-field class="form-field-full">
+                    <mat-label>Opis</mat-label>
+                    <textarea matInput formControlName="description" rows="4"></textarea>
+                    <mat-error *ngIf="eventForm.get('description')?.hasError('required')">
+                        Obavezno polje
+                    </mat-error>
+                    <mat-error *ngIf="eventForm.get('description')?.hasError('minlength')">
+                        Minimalno 20 karaktera
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <!-- dugme je ugaseno sve dok cela forma nije validan -->
+            <button class="full-width" matButton="filled" type="submit" [disabled]="!eventForm.valid">
+                Sačuvaj izmenjen događaj
+            </button>
+        </div>
+    </form>
+</div>

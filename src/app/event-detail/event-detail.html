@@ -1,12 +1,11 @@
 <div class="event-container">
     <!-- ovo je samo za sad kad nema eventa tipa neko rucno unese neki glup id treba se formira cela nova stranica i da se radi redirekcija -->
-    <div class="noevent" *ngIf="!event">
-        Element koji pokusavate da pronadjete ne postoji
+    <div class="no-events" *ngIf="!event">
+        Event koji pokusavate da pronadjete ne postoji
     </div>
     <!-- Stanje učitavanja -->
-    <div *ngIf="loading" class="loading-state">
-        <p>Učitavanje detalja događaja...</p>
-    </div>
+    <app-loading *ngIf="loading" [message]="'Učitavam detalje za dogadjaj...'">
+    </app-loading>
 
     <!--Ako se ne ucitava i nema gresaka ucitavamo sliku-->
     <div *ngIf="!loading && !error && event" class="event-content">
@@ -38,7 +37,20 @@
                 <!-- ovde prikazujemo osnovne informacije o eventu kao sto su datum vreme i lokacija -->
                 <div class="event-details">
                     <div class="detail-item">
-                        <mat-icon>event</mat-icon>
+                        <svg class="detail-item-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
+                            height="24" fill="none">
+                            <path d="M16 2V6M8 2V6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round"></path>
+                            <path
+                                d="M13 4H11C7.22876 4 5.34315 4 4.17157 5.17157C3 6.34315 3 8.22876 3 12V14C3 17.7712 3 19.6569 4.17157 20.8284C5.34315 22 7.22876 22 11 22H13C16.7712 22 18.6569 22 19.8284 20.8284C21 19.6569 21 17.7712 21 14V12C21 8.22876 21 6.34315 19.8284 5.17157C18.6569 4 16.7712 4 13 4Z"
+                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            </path>
+                            <path d="M3 10H21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round"></path>
+                            <path d="M11.9955 14H12.0045M11.9955 18H12.0045M15.991 14H16M8 14H8.00897M8 18H8.00897"
+                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            </path>
+                        </svg>
                         <!-- ponovo koristimo pipe za datum samo sada parsiramo ceo datum direktno u formatu kako nama odgovara MMM daje mesec nazivom dok ostalo parsira ostatk dana i godine normalno -->
                         <span>{{ event.eventDate | date:'MMM.dd.yyyy'}}</span>
                         <!-- ovde se proverava da li postoji krjanji datum eventa i ako postoji prikazuje se u istom formatu kao pocetak
@@ -48,13 +60,28 @@
 
                     <!-- ovde prikazujemo vreme dogadjaja  -->
                     <div class="detail-item">
-                        <mat-icon>schedule</mat-icon>
+                        <svg class="detail-item-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
+                            height="24" fill="none">
+                            <path
+                                d="M2.5 12C2.5 7.52166 2.5 5.28249 3.89124 3.89124C5.28249 2.5 7.52166 2.5 12 2.5C16.4783 2.5 18.7175 2.5 20.1088 3.89124C21.5 5.28249 21.5 7.52166 21.5 12C21.5 16.4783 21.5 18.7175 20.1088 20.1088C18.7175 21.5 16.4783 21.5 12 21.5C7.52166 21.5 5.28249 21.5 3.89124 20.1088C2.5 18.7175 2.5 16.4783 2.5 12Z"
+                                stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path>
+                            <path d="M9 9L13.0001 12.9996M16 8L11 13" stroke="currentColor" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
                         <!-- pipe short time nam daje vreme bez sekundi i oznake tipa vremenske zone i drugo odnosno smao sate i minute -->
                         <span>{{ event.eventDate | date:'shortTime'}}</span>
                     </div>
                     <!-- ovde dajemo podatke o preciznoj lokaciji gradu i drzavi eventa -->
                     <div class="detail-item">
-                        <mat-icon>location_on</mat-icon>
+                        <svg class="detail-item-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
+                            height="24" fill="none">
+                            <path
+                                d="M13.6177 21.367C13.1841 21.773 12.6044 22 12.0011 22C11.3978 22 10.8182 21.773 10.3845 21.367C6.41302 17.626 1.09076 13.4469 3.68627 7.37966C5.08963 4.09916 8.45834 2 12.0011 2C15.5439 2 18.9126 4.09916 20.316 7.37966C22.9082 13.4393 17.599 17.6389 13.6177 21.367Z"
+                                stroke="currentColor" stroke-width="1.5"></path>
+                            <path
+                                d="M15.5 11C15.5 12.933 13.933 14.5 12 14.5C10.067 14.5 8.5 12.933 8.5 11C8.5 9.067 10.067 7.5 12 7.5C13.933 7.5 15.5 9.067 15.5 11Z"
+                                stroke="currentColor" stroke-width="1.5"></path>
+                        </svg>
                         <span>{{ event.venue }}, {{ event.city }}, {{ event.country }}</span>
                     </div>
                 </div>
@@ -79,7 +106,15 @@
             </a>
             <!-- ovde prikazujemo poruku ukoliko su sve karte rasprodate -->
             <div *ngIf="event.soldOut" class="sold-out-message">
-                <mat-icon>block</mat-icon>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none">
+                    <path
+                        d="M13.9248 21H10.0752C5.44476 21 3.12955 21 2.27636 19.4939C1.42317 17.9879 2.60736 15.9914 4.97574 11.9985L6.90057 8.75333C9.17559 4.91778 10.3131 3 12 3C13.6869 3 14.8244 4.91777 17.0994 8.75332L19.0243 11.9985C21.3926 15.9914 22.5768 17.9879 21.7236 19.4939C20.8704 21 18.5552 21 13.9248 21Z"
+                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M12 9V13.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round"></path>
+                    <path d="M12 16.9922V17.0022" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round"></path>
+                </svg>
                 <span>Događaj je rasprodat</span>
             </div>
         </div>

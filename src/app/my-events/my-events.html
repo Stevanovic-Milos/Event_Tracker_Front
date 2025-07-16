@@ -1,7 +1,10 @@
 <!-- u ovoj sekciji na ovoj stranici se nalaze svi nasi eventovi -->
 <div class="event-container">
+  <h1 class="page-title"> Moji događaji</h1>
+
   <!-- ovo je za sada ovako bice formirana nova loading komponenta koja ce se koristiti za sva ucitavnja a sad da ima nesto cisto -->
-  <div *ngIf="loading" class="loading">Ucitavam koncerte...</div>
+  <app-loading *ngIf="loading" [message]="'Učitavam dogadjaje...'">
+  </app-loading>
   <!-- ovo prikazujemo ukoliko se zavrsilo ucitavanje a u bazi nemamo eventove -->
   <div *ngIf="!loading && events.length === 0" class="no-events">
     Nema koncerata za prikaz

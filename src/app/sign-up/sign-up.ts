@@ -106,9 +106,8 @@ export class SignUp implements OnInit {
         },
     
         //u slučaju greške, ispisujemo grešku u konzoli i obaveštavamo korisnika
-        //ako je greška 400, to znači da korisničko ime već postoji
         error: (error) => {
-             this.toastr.error('Došlo je do neočekivane greške.');
+             this.toastr.error('Server trenutno nije u mogućnosti da odgovori na poziv.');
             console.log('Greška prilikom registracije', error);
           }
         

@@ -8,6 +8,8 @@
     --secondary-color: #91B3FA;
     --accent-color: #e74c3c;
     --accent-color-hover: #ff5846;
+    --sucess-color: #56b65b;
+    --sucess-color-hover: #3e8341;
     --text-color: #333;
     --background-color: #f5f5f5;
     --sidebar-text: #2c3e50;
@@ -57,6 +59,25 @@ body {
     background: var(--background-color);
 }
 
+.event-title {
+    color: var(--text-color);
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    font-weight: 600;
+}
+
+.no-events {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-grey);
+    font-size: 1.2rem;
+    font-weight: 300;
+    font-style: italic;
+    border-radius: 4px;
+}
+
+
 .form {
     min-width: 150px;
     max-width: 500px;
@@ -87,6 +108,13 @@ body {
     font-size: 40px;
     font-weight: 600;
     color: var(--primary-color);
+}
+
+.page-title {
+    color: var(--primary-color);
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    font-weight: 800;
 }
 
 .title-form {
@@ -202,6 +230,12 @@ body {
         }
     }
 
+    // price niej unutar price-row sekcije na uredjivanju admina
+    .price {
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+
     .buy-link {
         color: var(--primary-color);
         text-decoration: none;
@@ -229,6 +263,24 @@ body {
         }
     }
 
+    .edit-button {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--sucess-color);
+        color: var(--white);
+        padding: 12px 24px;
+        border-radius: 24px;
+        max-width: fit-content;
+        text-decoration: none;
+        transition: var(--transition);
+
+        &:hover {
+            background: var(--sucess-color-hover);
+        }
+    }
+
+
     .ticket-button {
         display: flex;
         align-items: center;
@@ -249,8 +301,46 @@ body {
 }
 
 
+// forme za edit i kreiranje eventa 
+
+.form-section {
+    background-color: var(--background-color);
+    border-radius: 6px;
+}
+
+.section-title {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+}
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.form-field-large {
+    flex: 1 1 300px;
+}
+
+.form-field-medium {
+    flex: 1 1 200px;
+}
+
+.form-field-small {
+    flex: 1 1 150px;
+}
+
+.form-field-full {
+    flex: 1 1 100%;
+}
+
 @media (max-width: 768px) {
     .event-container {
         margin-top: 40px;
     }
+
 }
