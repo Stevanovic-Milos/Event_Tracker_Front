@@ -5,12 +5,13 @@ import { MatIcon } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AdminCreatedEventsService } from './admin-created-events.service';
+import { Loading } from '../loading/loading';
 
 
 @Component({
   selector: 'app-event',
   //CommonModule nam omogucava da koristimo osnovne angularove selektore kao sto je ngIf
-  imports: [CommonModule, MatIcon],
+  imports: [CommonModule, MatIcon, Loading],
   templateUrl: './admin-created-events.html',
   styleUrls: ['./admin-created-events.scss']
 })
@@ -73,5 +74,9 @@ export class AdminCreatedEvents implements OnInit {
   //ovde pozivom ove funkcije navigiramo an rutu event/id gde s ekasnije tu taj id vadi i prosledjuje nasem serveru d abi nam vratio tacan event
   openEventDetails(eventId: number): void {
     this.router.navigate(['/event', eventId]);
+  }
+  openEditEvent(eventId: number, event: MouseEvent): void {
+    event.stopPropagation();
+    this.router.navigate(['/edit-event', eventId]);
   }
 }

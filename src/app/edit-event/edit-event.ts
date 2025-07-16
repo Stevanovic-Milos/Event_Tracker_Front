@@ -1,20 +1,20 @@
-import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatNativeDateModule, MatOption } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { Router } from '@angular/router';
-import { EventService } from '../event/event.service';
-import { CommonModule } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
+import { EventService } from '../event/event.service';
 import { ToastrService } from 'ngx-toastr';
-import { EventData } from '../Models/models';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Event, EventData } from '../Models/models';
+import { MatSelect } from '@angular/material/select';
 
 @Component({
-  selector: 'app-create-event',
-  standalone: true,
+  selector: 'app-edit-event',
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -24,13 +24,19 @@ import { EventData } from '../Models/models';
     MatDatepickerModule,
     MatNativeDateModule,
     NgxMatTimepickerModule,
+    MatSelect,
+    MatOption
   ],
-  templateUrl: './create-event.html',
-  styleUrls: ['./create-event.scss']
+  templateUrl: './edit-event.html',
+  styleUrl: './edit-event.scss'
 })
-export class CreateEvent {
+export class EditEvent implements OnInit {
   eventData: EventData | null = null;
-  //ovoj je formFroup to je kao veliki wrapper, sa dosta form kontrola, to je roditeljska komponenta u kojoj cuvamo sve ove male formice
+  // uzvicnik oznacava da ga sigurno imamo i d amozemo da g incijalizujemo bez brige a kasnije cmeo mu dodeliti vrednost
+  event!: Event;
+  // postavljamo incijalno eventId na 0 posle se menja akd uzmemo neki realan event
+  eventId = 0;
+
   eventForm = new FormGroup({
     //eventName je novi formkontrol koji vucemo iz htmla postavljamo da bude prazno sa '' a validators.required  obezbedjuje da ovo polje mora da se popuni i to name
     //vraca u mat eroru tako proveravamo validnost polja
@@ -43,13 +49,14 @@ export class CreateEvent {
     availableTickets: new FormControl(100, [Validators.required, Validators.min(0)]),
     city: new FormControl('', Validators.required),
     country: new FormControl('', Validators.required),
+    soldOut: new FormControl(false, Validators.required),
     //opis sa ddatnim validatorom koji broji karaktere opis mora imati bar 20 karaktera
     description: new FormControl('', [Validators.required, Validators.minLength(20)]),
     //ovo je datum poctka koji se uzima kao Date ili null i postavlja se na null inicjalno
-    eventDate: new FormControl<Date | null>(null, Validators.required),
+    eventDate: new FormControl<Date | null | string>(null, Validators.required),
     //vreme postavljamo na string 12:00
     eventTime: new FormControl('12:00', Validators.required),
-    endDate: new FormControl<Date | null>(null, Validators.required),
+    endDate: new FormControl<Date | null | string>(null, Validators.required),
     endTime: new FormControl('13:00', Validators.required),
     genre: new FormControl('', Validators.required),
     minAge: new FormControl(18, Validators.min(0)),
@@ -63,7 +70,57 @@ export class CreateEvent {
     private eventService: EventService,
     private router: Router,
     private toastr: ToastrService,
+    private route: ActivatedRoute
+    //inicijalizujemo formu u konstruktoru da ne bi doslo do gresaka
   ) { }
+  ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      const eventId = +params['id'];
+      this.eventId = eventId;
+      //ovde pozivamo ansu funkciju koja hvata event na osnovu id-a
+      this.fetchEventDetails(eventId);
+    });
+
+  }
+  fetchEventDetails(eventId: number): void {
+    this.eventService.getEventById(eventId).subscribe({
+      next: (res) => {
+        this.event = res;
+        this.formSetValue();
+
+
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
+
+  formSetValue() {
+    this.eventForm.setValue({
+      eventName: this.event.eventName,
+      artist: this.event.artist,
+      eventImageUrl: this.event.eventImageUrl,
+      videoUrl: this.event.eventVideoUrl,
+      availableTickets: this.event.availableTickets,
+      city: this.event.city,
+      soldOut: this.event.soldOut,
+      country: this.event.country,
+      description: this.event.description,
+      eventDate: this.extractDateFromISO(this.event.eventDate),
+      eventTime: this.extractTimeFromISO(this.event.eventDate),
+      endDate: this.extractDateFromISO(this.event.endDate),
+      endTime: this.extractTimeFromISO(this.event.endDate),
+      genre: this.event.genre,
+      minAge: this.event.minAge,
+      organizer: this.event.organizer,
+      ticketPrice: this.event.ticketPrice,
+      venue: this.event.venue,
+      webUrlKarte: this.event.ticketWebsiteUrl
+
+    })
+  }
+
 
   //funkcija se poziva klikom na dugme
   onSubmit(): void {
@@ -75,7 +132,7 @@ export class CreateEvent {
       return;
     }
     //kreiramo event prosledjujemo nas form data koji je direktno model EventData iz modela
-    this.eventService.createEvent(this.eventData).subscribe({
+    this.eventService.editEventById(this.eventData).subscribe({
       //uzimamo odgovor koji je tipa MyResponse
       next: (response) => {
         //ako bek vrati sucess true onda prikazujemo poruku i redirektujemo naseg admina na njegove eventove
@@ -90,8 +147,8 @@ export class CreateEvent {
       },
       //ako dodje do greske prikazujemo gresku u toastr  i konyoli
       error: (err) => {
-        console.log('Greška pri kreiranju eventa:', err);
-        this.toastr.error('Greška pri kreiranju eventa');
+        console.log('Greška pri izmeni eventa:', err);
+        this.toastr.error('Greška pri izmeni eventa');
       }
     });
   }
@@ -109,8 +166,9 @@ export class CreateEvent {
       return;
     }
 
-    //kreiramo nas eventData od polja iz forme ovaj deo ?? je u slucaju d anema vrednosti inicjalizujemo sa '' jer polje po nasem modleu ne mzoe biti prazno niakda
+    //kreiramo nas eventData od polja iz forme ovaj deo ?? je u slucaju da nema vrednosti inicjalizujemo sa '' jer polje po nasem modleu ne mzoe biti prazno niakda
     this.eventData = {
+      eventId: this.eventId,
       eventName: formValue.eventName ?? '',
       artist: formValue.artist ?? '',
       eventImageUrl: formValue.eventImageUrl ?? '',
@@ -118,6 +176,7 @@ export class CreateEvent {
       availableTickets: formValue.availableTickets ?? 0,
       city: formValue.city ?? '',
       country: formValue.country ?? '',
+      soldOut: formValue.soldOut,
       description: formValue.description ?? '',
       genre: formValue.genre ?? '',
       minAge: formValue.minAge ?? 18,
@@ -131,7 +190,6 @@ export class CreateEvent {
       ticketWebsiteUrl: formValue.webUrlKarte ?? ''
     };
   }
-  //kombinacija stringa vremena sa normalnim datumom kako bi se kritalo iso format koji se cuva u bazi
   private combineDateTime(date: Date | string, time: string): string {
     // Ako je date string, parsiraj ga u Date objekat
     const dateObj = typeof date === 'string' ? new Date(date) : new Date(date);
@@ -152,5 +210,18 @@ export class CreateEvent {
 
     // Vratite ISO string
     return utcDate.toISOString();
+  }
+  private extractDateFromISO(isoString: string): Date {
+    if (!isoString) return new Date();
+    const date = new Date(isoString);
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  }
+  private extractTimeFromISO(isoString: string): string {
+    if (!isoString) return '12:00';
+    const date = new Date(isoString);
+    // Dodajemo leading zero ako je potrebno
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
   }
 }

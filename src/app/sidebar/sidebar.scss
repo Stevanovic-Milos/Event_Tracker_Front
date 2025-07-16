@@ -1,5 +1,5 @@
 .toolbar {
-    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    background: var(--primary-color);
     height: 64px;
     color: var(--background-color);
     position: fixed;
@@ -31,7 +31,7 @@
 
 .side-nav {
     height: auto;
-    width: 240px;
+    width: 280px;
     position: fixed;
     top: 64px;
     bottom: 0;
@@ -42,7 +42,7 @@
     display: flex;
     flex-direction: column;
     //pomeramo inicijalno da bi kada vratimo sve bilo na 0
-    transform: translateX(-235px); 
+    transform: translateX(-275px); 
 
     &.open {
         transform: translateX(0); 
@@ -117,7 +117,7 @@
     box-sizing: border-box;
 
     &.side-open {
-        margin-left: 240px;
+        margin-left: 280px;
     }
 }
 

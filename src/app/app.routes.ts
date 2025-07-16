@@ -8,6 +8,7 @@ import { MyEvents } from './my-events/my-events';
 import { CreateEvent } from './create-event/create-event';
 import { AdminGuard } from './auth/adminGuard.service';
 import { AdminCreatedEvents } from './admin-created-events/admin-created-events';
+import { EditEvent } from './edit-event/edit-event';
 
 //ovde predefinisemo adresu rute na kraju naseg url-a i povezujemo komponentu sa rutom
 export const routes: Routes = [
@@ -22,6 +23,7 @@ export const routes: Routes = [
   //sekcije gde postoji i adminguard dozvoljavaju pristup iskljucivo adminima 
   { path: 'create-event', component: CreateEvent, canActivate: [AuthGuard, AdminGuard] },
   { path: 'admin-events', component: AdminCreatedEvents, canActivate: [AuthGuard, AdminGuard] },
+  { path: 'edit-event/:id', component: EditEvent, canActivate: [AuthGuard, AdminGuard] },
   { path: 'sign-in', component: SignIn },
   { path: 'sign-up', component: SignUp }
 ];
