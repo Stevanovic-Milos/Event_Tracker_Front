@@ -4,5 +4,5 @@
 // Ovaj fajl se obično koristi u kombinaciji sa environment.prod.ts fajlom koji sadrži konfiguraciju za produkcijsko okruženje ali kako je ovo školski projekat taj fajl neće biti kreiran.
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8080' 
+  apiUrl: 'https://event-tracker-xacy.onrender.com' 
 };

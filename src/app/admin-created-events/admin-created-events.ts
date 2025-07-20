@@ -6,12 +6,14 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AdminCreatedEventsService } from './admin-created-events.service';
 import { Loading } from '../loading/loading';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatInput, MatInputModule } from '@angular/material/input';
 
 
 @Component({
   selector: 'app-event',
   //CommonModule nam omogucava da koristimo osnovne angularove selektore kao sto je ngIf
-  imports: [CommonModule, MatIcon, Loading],
+  imports: [CommonModule, MatIcon, Loading, ReactiveFormsModule, MatInputModule],
   templateUrl: './admin-created-events.html',
   styleUrls: ['./admin-created-events.scss']
 })
@@ -22,12 +24,27 @@ export class AdminCreatedEvents implements OnInit {
   loading = true;
   success = true;
   message = '';
+  filterList: Event[] = [];
+  filter = new FormControl('')
 
   constructor(private apiService: AdminCreatedEventsService, private router: Router, private toastr: ToastrService) { }
 
   //standardna angularova kontrola sve sto je ove aktivira se odmah po ucitavanju ove komponente 
   ngOnInit(): void {
     this.loadEvents();
+    this.setupFilter();
+  }
+
+  setupFilter() {
+    this.filter.valueChanges.subscribe(res => {
+      const searchTerm = res!.toLowerCase().trim();
+      this.filterList = this.events.filter(item => {
+        return (item.eventName?.toLowerCase().includes(searchTerm)) ||
+          (item.city?.toLowerCase().includes(searchTerm)) ||
+          (item.artist?.toLowerCase().includes(searchTerm)) ||
+          (item.genre?.toLowerCase().includes(searchTerm));
+      });
+    });
   }
 
   //Funkcija koja ucitava eventove poziva apiService koji smo deklarisali u konstruktoru i subskrajbuje se na njega 
@@ -38,6 +55,7 @@ export class AdminCreatedEvents implements OnInit {
     this.apiService.getEvents().subscribe({
       next: (data) => {
         this.events = data;
+        this.filterList = data;
         this.loading = false;
       },
       error: (err) => {

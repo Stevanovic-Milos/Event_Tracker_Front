@@ -5,15 +5,25 @@
   <!-- ovo je za sada ovako bice formirana nova loading komponenta koja ce se koristiti za sva ucitavnja a sad da ima nesto cisto -->
   <app-loading *ngIf="loading" [message]="'Učitavam dogadjaje...'">
   </app-loading>
+
+  <!-- ovim radimo pretragu eventova po kriterijumima -->
+  <div class="form-row">
+    <mat-form-field class="form-field-small">
+      <input matInput [formControl]="filter" placeholder="Unesite Naziv ili Grad ili Izvodjača ili Žanr">
+      <mat-label>Pretraži</mat-label>
+    </mat-form-field>
+  </div>
+
   <!-- ovo prikazujemo ukoliko se zavrsilo ucitavanje a u bazi nemamo eventove -->
-  <div *ngIf="!loading && events.length === 0" class="no-events">
+  <div *ngIf="!loading && filterList.length === 0" class="no-events">
     Nema koncerata za prikaz
   </div>
 
+
   <!-- ovo je glavni grid gde su prikazani svi eventovi proveravamo da l ije loading zavrsen i da li je vise od 0 eventova i tek tada kreiramo grid -->
-  <div *ngIf="!loading && events.length > 0" class="events-grid">
+  <div *ngIf="!loading && filterList.length > 0" class="events-grid">
     <!-- pravimo petlju kde iteriramo kao objekat event kroz nasu listu objekata events na klik pozivamo funkciju openEventsDetails i prosledjujemo joj id-->
-    <div *ngFor="let event of events" class="event-card" (click)="openEventDetails(event.id)">
+    <div *ngFor="let event of filterList" class="event-card" (click)="openEventDetails(event.id)">
       <!-- sekcija slike eventa -->
       <div class="event-image">
         <!-- nismo krirali eksterni bucket vec se sike nalaze lokalno u nasem assets/images folderu dok nam baza sadrzi url do slike -->

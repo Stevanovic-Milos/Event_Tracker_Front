@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from '../Models/models'
 import { DataService } from '../Shared/data.service';
+import { environment } from '../Environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ import { DataService } from '../Shared/data.service';
 
 //adresa poziva port na koji bek salje api sa kontrolera
 export class UserDataService {
-  private apiUrl = 'http://localhost:8080/api/UserDetails';
+  private apiUrl = environment.apiUrl + '/api/UserDetails';
 
   constructor(private data: DataService) { }
   // vraca sve 
