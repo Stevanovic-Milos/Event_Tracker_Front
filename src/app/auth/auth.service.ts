@@ -54,7 +54,7 @@ export class AuthService {
             return;
         }
         this.cookieService.delete('auth_token');
-        window.location.reload();
+         this.router.navigate(['/sign-in']);
     }
     isLogged(): boolean {
         return !!this.cookieService.get('auth_token');
