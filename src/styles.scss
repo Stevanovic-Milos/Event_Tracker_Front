@@ -342,5 +342,10 @@ body {
     .event-container {
         margin-top: 40px;
     }
+  .events-grid {
+    //prikazujemo 1 item sirine 375px tako da nam se taman uklope u kontejner 
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+
 
 }
