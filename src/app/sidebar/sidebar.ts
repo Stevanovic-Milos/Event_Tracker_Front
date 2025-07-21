@@ -40,6 +40,9 @@ export class Sidebar implements OnInit {
   toggleSideNav() {
     this.isSideOpen = !this.isSideOpen;
   }
+  closeSidebar() {
+    this.isSideOpen = false;
+  }
 
   //funkcija koja uzima sve podatke o korisniku
   getUserDetails() {
