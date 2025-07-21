@@ -26,7 +26,7 @@
             <h2>{{user?.firstname}} {{user?.lastname}}</h2>
         </div>
         <!-- ovde ispod se nalazi lista nav koja predstavlja sve elemente sedebara na koje mozemo kliknuti i koji ce nas odvesti na zadatu rutu -->
-        <nav class="nav-list">
+        <nav class="nav-list" (click)="toggleSideNav()">
             <!-- postavlja se ruta i preko routeLinkActive se proverava d ali je to trenutna ruta radi stilova -->
             <a routerLink="/event" routerLinkActive="active" class="nav-item">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none">
@@ -75,7 +75,7 @@
         </nav>
     </div>
     <!-- ovde se nalazi sav sadrzaj nasih stranica kada se side otvori dodaje se klasa side-open koja pomera kontent u desno -->
-    <div class="content" [class.side-open]="isSideOpen" >
+    <div class="content" (click)="toggleSideNav()" [class.side-open]="isSideOpen" >
         <router-outlet></router-outlet>
     </div>
 </div>
