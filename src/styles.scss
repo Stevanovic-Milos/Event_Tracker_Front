@@ -49,8 +49,10 @@ body {
     margin: auto;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
-    padding:20px;
+    padding-top: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
+
 
 }
 
@@ -341,12 +343,30 @@ body {
 
 @media (max-width: 768px) {
     .event-container {
-        margin-top: 40px;
+        margin-top: 42px;
+        padding: 5px;
     }
+
     .events-grid {
-      //prikazujemo 1 item sirine 375px tako da nam se taman uklope u kontejner 
-       grid-template-columns: 1fr;
+        //prikazujemo 1 item sirine 375px tako da nam se taman uklope u kontejner 
+        grid-template-columns: 1fr;
         gap: 10px;
     }
 
+    .event-details {
+        padding: 10px;
+
+        .delete-button {
+            padding: 6px 12px;
+        }
+
+        .edit-button {
+            padding: 6px 12px;
+        }
+
+        .ticket-button {
+            padding: 6px 12px;
+        }
+
+    }
 }

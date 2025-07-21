@@ -42,11 +42,11 @@
     display: flex;
     flex-direction: column;
     //pomeramo inicijalno da bi kada vratimo sve bilo na 0
-    transform: translateX(-275px); 
+    transform: translateX(-275px);
 
     &.open {
-        transform: translateX(0); 
-        pointer-events: auto; 
+        transform: translateX(0);
+        pointer-events: auto;
     }
 
     .sidenav-header {
@@ -126,12 +126,38 @@
         box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
     }
 
+    .username {
+        display: none;
+    }
+
+    .side-nav {
+        width: 200px;
+        //pomeramo inicijalno da bi kada vratimo sve bilo na 0
+        transform: translateX(-280px);
+
+        &.open {
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+
+        .nav-list {
+            padding: 12px 8px;
+            flex-grow: 1;
+        }
+
+        .nav-item {
+            padding: 10px 14px;
+            border-radius: 10px;
+
+        }
+    }
+
     .content {
         padding: 20px;
 
         //na telefonu ne gurmao content u levo
         &.side-open {
-            margin-left: 0;
+            margin-left: 0px;
         }
     }
 }

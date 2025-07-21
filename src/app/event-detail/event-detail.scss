@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
+  padding-top: 20px;
 }
 
 .event-header {
@@ -226,6 +227,15 @@
 
     .video iframe {
       height: 250px;
+    }
+  }
+
+  .event-header {
+    .event-info {
+      .event-title {
+
+        text-align: left;
+      }
     }
   }
 }
