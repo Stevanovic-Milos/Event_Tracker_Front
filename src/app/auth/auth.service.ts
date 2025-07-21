@@ -8,6 +8,7 @@ import { environment } from '../Environments/environment';
 import { User } from '../Models/models';
 import { CookieService } from 'ngx-cookie-service';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 //injectable decorator se koristi da bi Angular znao da je ova klasa servis koji može biti injektovan u druge komponente ili servise
 //providedIn: 'root' znači da će ovaj servis biti dostupan u celoj aplikaciji, bez potrebe da ga ručno dodajemo u providers niz u modulu
@@ -21,7 +22,7 @@ export class AuthService {
 
     // HttpClient se koristi za slanje HTTP zahteva ka serveru
     // Ovaj servis se injektuje u konstruktoru klase AuthService
-    constructor(private http: HttpClient, private cookieService: CookieService, private toastr: ToastrService) { }
+    constructor(private http: HttpClient, private cookieService: CookieService, private toastr: ToastrService, private router: Router) { }
 
     // Metode za  sign in korisnika, sa dva parametra: username i password
     // Ove metode šalju POST zahteve ka serveru sa korisničkim imenom i lozinkom
