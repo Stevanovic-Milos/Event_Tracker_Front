@@ -59,6 +59,8 @@ export class DataService {
         // šaljemo GET zahtev ka serveru sa URL-om i našim headerima za autentifikaciju
         // koristimo catchError da obradimo grešku ako dođe do nje
         return this.http.get<T>(url, { headers: this.getAuthHeaders() })
+                    .pipe(catchError(this.handleError.bind(this)));
+
         //pipe radi tako da se greška hvata i prosleđuje handleError metodi
     }
 
